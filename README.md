@@ -7,11 +7,11 @@ This repository showcases a serverless expense management system built using AWS
 ## Table of Contents
 1. [Overview](#overview)
 2. [AWS Services Used](#aws-services-used)
-3. [System Architecture](#system-architecture)
-4. [Lambda Functions](#lambda-functions)
-5. [How to Use the APIs](#how-to-use-the-apis)
-6. [Sample Receipts](#sample-receipts)
-7. [Project Flow](#project-flow)
+3. [AWS Principles Followed](#aws-principles-followed)
+4. [System Architecture](#system-architecture)
+5. [Lambda Functions](#lambda-functions)
+6. [How to Use the APIs](#how-to-use-the-apis)
+7. [Sample Receipts](#sample-receipts)
 8. [Future Enhancements](#future-enhancements)
 
 ---
@@ -33,6 +33,37 @@ This project enables users to upload receipt files, process them to extract expe
 
 ---
 
+## AWS Principles Followed
+
+This project adheres to several **AWS Well-Architected Framework** principles and best practices to ensure scalability, reliability, and cost-efficiency:
+
+#### 1. **Security**  
+   - **Cognito Authentication**: User authentication is implemented using AWS Cognito, ensuring secure access to the APIs with JWT tokens.  
+   - **IAM Roles and Policies**: Fine-grained permissions are applied using IAM roles and policies to restrict access to AWS resources, adhering to the principle of least privilege.  
+   - **Encryption**: S3 bucket ensures secure data storage, and API Gateway uses HTTPS for secure communication.
+
+#### 2. **Reliability**  
+   - **Serverless Architecture**: All components are built using serverless technologies (Lambda, S3, DynamoDB), ensuring high availability and automatic recovery from failures.  
+   - **CloudWatch Logging**: All Lambda functions are integrated with CloudWatch for monitoring and error detection, enabling quick troubleshooting.  
+
+#### 3. **Performance Efficiency**  
+   - **Event-Driven Architecture**: The project leverages S3 event notifications to trigger downstream processes, optimizing resource utilization.  
+   - **DynamoDB for Scalability**: DynamoDB is used as a highly available and scalable database for storing receipt data.  
+
+#### 4. **Cost Optimization**  
+   - **Free Tier Utilization**: The project is designed to operate within the AWS Free Tier, making it cost-efficient for development and testing.  
+   - **Pay-As-You-Go Model**: Serverless technologies (Lambda, API Gateway) ensure costs are incurred only for actual usage.  
+
+#### 5. **Operational Excellence**  
+   - **CloudWatch Monitoring**: Regular logging and monitoring ensure operational insights and allow for ongoing optimization.  
+   - **Separation of Concerns**: Each Lambda function has a single responsibility, improving maintainability and scalability.  
+
+#### 6. **Scalability and Resilience**  
+   - **Serverless Paradigm**: Automatic scaling of Lambda functions and S3 ensures the system can handle varying loads without manual intervention.  
+   - **Statelessness**: The design ensures all Lambda functions are stateless, enabling horizontal scaling.  
+
+---
+
 ## System Architecture
 The system is designed with the following flow:
 1. User logs in via Cognito to obtain a JWT token for API authentication.
@@ -43,6 +74,7 @@ The system is designed with the following flow:
 6. Users can add or retrieve expense details directly via API endpoints.
 
 Refer to the below Flowchart for a detailed view to understand the system's flow, highlighting the interaction between AWS services, APIs, and users
+
 ![AWSv1](https://github.com/user-attachments/assets/a57cd41c-a5ef-46a1-96fa-644fdbe56c35)
 
 
