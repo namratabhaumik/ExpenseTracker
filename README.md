@@ -5,6 +5,7 @@ This repository showcases a serverless expense management system built using AWS
 ---
 
 ## Table of Contents
+
 1. [Overview](#overview)
 2. [AWS Services Used](#aws-services-used)
 3. [AWS Principles Followed](#aws-principles-followed)
@@ -17,12 +18,14 @@ This repository showcases a serverless expense management system built using AWS
 ---
 
 ## Overview
+
 This project enables users to upload receipt files, process them to extract expense details, and store the data in DynamoDB. It showcases best practices in AWS serverless architecture, security via Cognito authentication, and robust error handling using CloudWatch logs.
 
 ---
 
 ## AWS Services Used
-- **Amazon S3**: To store receipt files.
+
+- **Amazon S3**: To store receipts as files.
 - **Amazon DynamoDB**: To store expense details.
 - **AWS Lambda**: To process receipts, manage database operations, and send notifications.
 - **Amazon Cognito**: For user authentication and API security.
@@ -37,35 +40,43 @@ This project enables users to upload receipt files, process them to extract expe
 
 This project adheres to several **AWS Well-Architected Framework** principles and best practices to ensure scalability, reliability, and cost-efficiency:
 
-#### 1. **Security**  
-   - **Cognito Authentication**: User authentication is implemented using AWS Cognito, ensuring secure access to the APIs with JWT tokens.  
-   - **IAM Roles and Policies**: Fine-grained permissions are applied using IAM roles and policies to restrict access to AWS resources, adhering to the principle of least privilege.  
-   - **Encryption**: S3 bucket ensures secure data storage, and API Gateway uses HTTPS for secure communication.
+#### 1. **Security**
 
-#### 2. **Reliability**  
-   - **Serverless Architecture**: All components are built using serverless technologies (Lambda, S3, DynamoDB), ensuring high availability and automatic recovery from failures.  
-   - **CloudWatch Logging**: All Lambda functions are integrated with CloudWatch for monitoring and error detection, enabling quick troubleshooting.  
+- **Cognito Authentication**: User authentication is implemented using AWS Cognito, ensuring secure access to the APIs with JWT tokens.
+- **IAM Roles and Policies**: Fine-grained permissions are applied using IAM roles and policies to restrict access to AWS resources, adhering to the principle of least privilege.
+- **Encryption**: S3 bucket ensures secure data storage, and API Gateway uses HTTPS for secure communication.
 
-#### 3. **Performance Efficiency**  
-   - **Event-Driven Architecture**: The project leverages S3 event notifications to trigger downstream processes, optimizing resource utilization.  
-   - **DynamoDB for Scalability**: DynamoDB is used as a highly available and scalable database for storing receipt data.  
+#### 2. **Reliability**
 
-#### 4. **Cost Optimization**  
-   - **Free Tier Utilization**: The project is designed to operate within the AWS Free Tier, making it cost-efficient for development and testing.  
-   - **Pay-As-You-Go Model**: Serverless technologies (Lambda, API Gateway) ensure costs are incurred only for actual usage.  
+- **Serverless Architecture**: All components are built using serverless technologies (Lambda, S3, DynamoDB), ensuring high availability and automatic recovery from failures.
+- **CloudWatch Logging**: All Lambda functions are integrated with CloudWatch for monitoring and error detection, enabling quick troubleshooting.
 
-#### 5. **Operational Excellence**  
-   - **CloudWatch Monitoring**: Regular logging and monitoring ensure operational insights and allow for ongoing optimization.  
-   - **Separation of Concerns**: Each Lambda function has a single responsibility, improving maintainability and scalability.  
+#### 3. **Performance Efficiency**
 
-#### 6. **Scalability and Resilience**  
-   - **Serverless Paradigm**: Automatic scaling of Lambda functions and S3 ensures the system can handle varying loads without manual intervention.  
-   - **Statelessness**: The design ensures all Lambda functions are stateless, enabling horizontal scaling.  
+- **Event-Driven Architecture**: The project leverages S3 event notifications to trigger downstream processes, optimizing resource utilization.
+- **DynamoDB for Scalability**: DynamoDB is used as a highly available and scalable database for storing receipt data.
+
+#### 4. **Cost Optimization**
+
+- **Free Tier Utilization**: The project is designed to operate within the AWS Free Tier, making it cost-efficient for development and testing.
+- **Pay-As-You-Go Model**: Serverless technologies (Lambda, API Gateway) ensure costs are incurred only for actual usage.
+
+#### 5. **Operational Excellence**
+
+- **CloudWatch Monitoring**: Regular logging and monitoring ensure operational insights and allow for ongoing optimization.
+- **Separation of Concerns**: Each Lambda function has a single responsibility, improving maintainability and scalability.
+
+#### 6. **Scalability and Resilience**
+
+- **Serverless Paradigm**: Automatic scaling of Lambda functions and S3 ensures the system can handle varying loads without manual intervention.
+- **Statelessness**: The design ensures all Lambda functions are stateless, enabling horizontal scaling.
 
 ---
 
 ## System Architecture
+
 The system is designed with the following flow:
+
 1. User logs in via Cognito to obtain a JWT token for API authentication.
 2. Receipt files are uploaded to S3 using an API endpoint.
 3. S3 triggers a Lambda function via event notifications to process the file.
@@ -77,22 +88,25 @@ Refer to the below Flowchart for a detailed view to understand the system's flow
 
 ![AWSv1](https://github.com/user-attachments/assets/a57cd41c-a5ef-46a1-96fa-644fdbe56c35)
 
-
 ---
 
 ## Lambda Functions
+
 The repository includes the following Lambda functions:
 
 1. **Upload & Process Receipts**:
+
    - Validates the JWT token to authenticate the user.
    - Accepts a base64-encoded receipt file and uploads it to S3 with metadata.
    - Extracts date, total amount, and transaction ID from the receipt.
    - Stores the data in DynamoDB.
 
 2. **Sends Email Notification**:
+
    - Sends Email Notification to the user on successful receipt upload
 
 3. **Add Expense**:
+
    - Manually adds expense details to DynamoDB.
 
 4. **Get Expense**:
@@ -101,8 +115,10 @@ The repository includes the following Lambda functions:
 ---
 
 ## How to Use the APIs
+
 1. **Prerequisites**:
-   - Install [Postman](https://www.postman.com/downloads/). 
+
+   - Install [Postman](https://www.postman.com/downloads/).
    - Use Content-Type application/x-www-form-urlencoded while retrieving the JWT token from Cognito's /oauth2/token API endpoint
    - Get the Client ID and Client Secret from Cognito and encode it in base64 with the format \<Client ID>:\<Client Secret>
    - Pass this base64 encoded to the /oauth2/token API endpoint of Cognito in the Authorization header as Basic \<base64 encoded data>
@@ -112,6 +128,7 @@ The repository includes the following Lambda functions:
    - Use that id_token/JWT token as the Bearer token in the header of all APIs that you'll invoke in this project (Currently the token is valid for 24 hrs)
 
 2. **API Endpoints**:
+
    - **Upload Receipt**:
      - Method: `POST`
      - URL: `<API-Gateway-URL>/upload-receipt`
@@ -147,7 +164,7 @@ The repository includes the following Lambda functions:
      - Body (JSON): Retrieves all expenses for a particular user id
        ```json
        {
-         "UserId": "user123",
+         "UserId": "user123"
        }
        ```
      - Body (JSON): Retrieves only that specific expense for a particular user id
@@ -164,11 +181,13 @@ The repository includes the following Lambda functions:
 ---
 
 ## Sample Receipts
+
 The repository includes two sample receipt files in the `Receipts` folder. You can use these to test the system by converting the contents to base64 and uploading via Postman.
 
 ---
 
 ## Future Enhancements
+
 - Add frontend for better user interaction.
 - Implement advanced receipt data extraction using AI/ML.
 - Enhance error notifications using AWS Step Functions.
@@ -176,9 +195,9 @@ The repository includes two sample receipt files in the `Receipts` folder. You c
 ---
 
 ## License
+
 This project is licensed under the MIT License. See the LICENSE file for details.
 
 ---
 
 For any queries or feedback, please open an issue or reach out!
-
