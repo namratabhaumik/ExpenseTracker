@@ -3,6 +3,10 @@
 This repository showcases a serverless expense management system built using AWS services. The project demonstrates expertise in AWS architecture, integrating key services such as Lambda, API Gateway, DynamoDB, S3, Cognito, and SNS.
 
 ---
+## Medium Link
+[My AWS Adventure: Building a Serverless Expense Tracker](https://namrata-bhaumik.medium.com/my-aws-adventure-building-a-serverless-expense-tracker-392091e60207?source=friends_link&sk=f09eb327770dec49c4b35ad2c5a7bf69)
+
+---
 
 ## Table of Contents
 
